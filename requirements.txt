@@ -2,3 +2,4 @@ httpx>=0.27
 PyYAML>=6.0
 Flask>=3.0
 markupsafe>=2.1
+pytest>=8.0       # tests only

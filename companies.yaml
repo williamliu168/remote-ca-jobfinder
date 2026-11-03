@@ -1,5 +1,5 @@
 # =============================================================================
-# Curated companies scraped via their PUBLIC Greenhouse / Lever job boards.
+# Curated companies scraped via their PUBLIC Greenhouse / Lever / Ashby job boards.
 # No auth, no API keys. Chosen because they are Canadian and/or remote-first and
 # routinely hire in-house counsel, compliance, privacy, and contracts roles
 # (fintech & crypto companies especially hire a lot of legal/compliance staff).
@@ -16,18 +16,18 @@
 #
 # NOTE: many Canadian scale-ups (Clio, Trulioo, 1Password, Benevity, Vidyard,
 # Ada, Remitly, Jobber, Lightspeed) use Ashby / Workday / SmartRecruiters, which
-# this tool does NOT scrape — track those manually, or add an Ashby scraper (v2).
+# this tool does NOT scrape (Ashby is now supported — add their slugs with platform: ashby).
 # =============================================================================
 companies:
   # --- Canadian / Canadian-founded -------------------------------------------
-  - { slug: wealthsimple, platform: lever, tags: [canada, fintech, compliance, remote-first] }
+  - { slug: wealthsimple, platform: ashby, display_name: Wealthsimple, tags: [canada, fintech, compliance, remote-first] }
   - { slug: hootsuite, platform: greenhouse, tags: [canada, remote-first] }
   - { slug: thinkific, platform: greenhouse, tags: [canada, remote-first] }
   - { slug: faire, platform: greenhouse, tags: [canada, marketplace, remote-first] }
 
   # --- Fintech / crypto (heavy legal, compliance, privacy, regulatory) -------
   - { slug: coinbase, platform: greenhouse, tags: [fintech, crypto, compliance] }
-  - { slug: plaid, platform: lever, tags: [fintech, compliance] }
+  - { slug: plaid, platform: ashby, display_name: Plaid, tags: [fintech, compliance] }
   - { slug: affirm, platform: greenhouse, tags: [fintech, compliance, remote-first] }
   - { slug: brex, platform: greenhouse, tags: [fintech, compliance, remote-first] }
   - { slug: robinhood, platform: greenhouse, tags: [fintech, compliance] }

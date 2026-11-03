@@ -1,18 +1,30 @@
-"""Load companies.yaml and group slugs per platform (greenhouse | lever)."""
+"""Load the active profile's company list and group slugs per platform.
+
+Platforms: greenhouse | lever | ashby. The file defaults to companies.yaml; a
+profile can point elsewhere with its `companies:` key.
+"""
 from __future__ import annotations
 
 from pathlib import Path
 
 import yaml
 
-CONFIG_PATH = Path(__file__).parent.parent / "companies.yaml"
+from .profile import load as load_profile
+
+CONFIG_PATH = Path(__file__).parent.parent / "companies.yaml"   # default list
+
+
+def config_path() -> Path:
+    """The company list for the active profile."""
+    return load_profile().companies_path
 
 
 def load(enabled_only: bool = True, tag: str | None = None) -> list[dict]:
     """Return the list of company records (optionally filtered by enabled/tag)."""
-    if not CONFIG_PATH.exists():
-        raise FileNotFoundError(f"Missing {CONFIG_PATH}")
-    with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+    path = config_path()
+    if not path.exists():
+        raise FileNotFoundError(f"Missing {path}")
+    with open(path, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f) or {}
     rows = data.get("companies") or []
     if enabled_only:

@@ -7,8 +7,10 @@ Response: {"jobs": [{id, title, company_name, candidate_required_location,
 url, description, publication_date, job_type, category}, ...]}
 
 Remotive is one of the few free remote boards with a real "legal" category, so
-it's the main non-tech source here. We pull the legal category plus a general
-sweep and keep only Canada-eligible postings (this is a firehose — filtering at
+it's the main non-tech source here. We pull the profile's categories
+(`sources.remotive_categories`, default [legal]; slugs are listed at
+/api/remote-jobs/categories) plus a general sweep and keep only Canada-eligible
+postings (this is a firehose — filtering at
 scrape time keeps the DB small). `job_type` is a v2 light-intensity hook; not
 stored in v1.
 """
@@ -18,6 +20,7 @@ import httpx
 
 from ..classify import classify_job
 from ..db import connect
+from ..profile import load as load_profile
 from .common import USER_AGENT, strip_html, upsert_jobs
 
 API_URL = "https://remotive.com/api/remote-jobs"
@@ -47,11 +50,12 @@ def _fetch(client: httpx.Client, params: dict) -> list[dict]:
 
 
 def scrape() -> dict:
-    """Pull the legal category + a general sweep; upsert CA-eligible jobs."""
+    """Pull the profile's categories + a general sweep; upsert CA-eligible jobs."""
     conn = connect()
     seen: dict[str, dict] = {}
+    pulls = [{"category": c} for c in load_profile().remotive_categories] + [{}]
     with httpx.Client(headers={"User-Agent": USER_AGENT}) as client:
-        for params in ({"category": "legal"}, {}):
+        for params in pulls:
             try:
                 for job in _fetch(client, params):
                     seen[job["source_id"]] = job        # dedup across the two pulls

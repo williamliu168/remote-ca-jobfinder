@@ -128,7 +128,7 @@ def index():
 
     conn = connect()
     sql = ["SELECT id, source, company, title, location, status, url, "
-           "country, remote_policy, role_tag, ca_eligible FROM jobs"]
+           "country, remote_policy, role_tag, ca_eligible, fit_score FROM jobs"]
     where, params = [], []
     if status:
         where.append("status = ?"); params.append(status)
@@ -139,7 +139,8 @@ def index():
         params += [f"%{q}%", f"%{q}%", f"%{q}%"]
     if where:
         sql.append("WHERE " + " AND ".join(where))
-    sql.append("ORDER BY (role_tag != 'other') DESC, scraped_at DESC LIMIT 5000")
+    sql.append("ORDER BY (role_tag != 'other') DESC, fit_score IS NULL, fit_score DESC, "
+               "scraped_at DESC LIMIT 5000")
     raw = conn.execute(" ".join(sql), params).fetchall()
     sources = [r["source"] for r in conn.execute(
         "SELECT DISTINCT source FROM jobs ORDER BY source").fetchall()]
@@ -158,8 +159,10 @@ def index():
         rcol, rlab = REGION_BADGE.get(r["remote_policy"], ("#888", r["remote_policy"] or "?"))
         region_badge = f'<span class="status" style="background:{rcol}">{escape(rlab)}</span>'
         mark = "⭐ " if is_surfaced(r["role_tag"]) else ""
+        fit = "" if r["fit_score"] is None else str(r["fit_score"])
         body_rows.append(f"""
           <tr>
+            <td style="text-align:right;font-weight:600">{fit}</td>
             <td>{region_badge}</td>
             <td>{status_pill(r['status'])}</td>
             <td style="color:#888;font-size:.72rem">{escape(r['source'])}</td>
@@ -169,7 +172,7 @@ def index():
             <td style="color:#888">{escape(r['location'] or '')}</td>
           </tr>""")
     table = ("<p style='color:#888'>(no jobs in this view)</p>" if not rows else
-             "<table><thead><tr><th>Region</th><th>Status</th><th>Source</th><th>Company</th>"
+             "<table><thead><tr><th>Fit</th><th>Region</th><th>Status</th><th>Source</th><th>Company</th>"
              "<th>Title</th><th>Location</th></tr></thead><tbody>" + "".join(body_rows) + "</tbody></table>")
 
     view_opts = "".join(f'<option value="{k}"{" selected" if k == view else ""}>{escape(v)}</option>'
@@ -222,6 +225,14 @@ def show_job(job_id: int):
             f'CA-eligible <code>{"yes" if job["ca_eligible"] else "no"}</code>'
             f'{" · <em>" + escape(job["role_notes"]) + "</em>" if job["role_notes"] else ""}'
             f'</p>'
+        )
+    if job["fit_score"] is not None:
+        classify_line += (
+            f'<p class="summary" style="font-size:.85rem">'
+            f'fit <strong>{job["fit_score"]}</strong>'
+            f'{" · " + escape(job["fit_flags"]) if job["fit_flags"] else ""}<br>'
+            f'hits: {escape(job["fit_hits"] or "-")}<br>'
+            f'gaps: {escape(job["fit_gaps"] or "-")}</p>'
         )
     body = f"""
       <p><a href="{url_for('index')}">← back to list</a></p>

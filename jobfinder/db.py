@@ -9,12 +9,23 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 
-DB_PATH = Path(__file__).parent / "db.sqlite"
+DB_PATH = Path(__file__).parent / "db.sqlite"     # the default profile's DB
+
+
+def db_path() -> Path:
+    """DB file for the active profile: db.sqlite for the default profile,
+    db.<profile-name>.sqlite otherwise, so statuses never mix across profiles."""
+    from .profile import load as load_profile   # local import: profile -> roles only
+    prof = load_profile()
+    if prof.is_default:
+        return DB_PATH
+    safe = "".join(ch if ch.isalnum() or ch in "-_" else "-" for ch in prof.name)
+    return DB_PATH.with_name(f"db.{safe}.sqlite")
 
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS jobs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    source TEXT NOT NULL,          -- greenhouse | lever | remotive | remoteok | manual
+    source TEXT NOT NULL,          -- greenhouse | lever | ashby | remotive | remoteok | manual
     source_id TEXT NOT NULL,
     company TEXT NOT NULL,
     title TEXT NOT NULL,
@@ -39,7 +50,13 @@ CREATE INDEX IF NOT EXISTS idx_jobs_role_tag ON jobs(role_tag);
 
 # Columns added after the initial schema. `connect()` adds any that are missing.
 # v2 hook: light-intensity work would add e.g. ("job_type", "TEXT") here.
-_JOB_COLUMN_MIGRATIONS: list[tuple[str, str]] = []
+_JOB_COLUMN_MIGRATIONS: list[tuple[str, str]] = [
+    ("fit_score", "INTEGER"),   # 0-100 résumé fit (jobfinder/score.py); NULL = unscored
+    ("fit_hits", "TEXT"),       # vocab terms the JD asks for that the résumé shows
+    ("fit_gaps", "TEXT"),       # vocab terms the JD asks for that the résumé lacks
+    ("fit_flags", "TEXT"),      # dealbreakers / seniority notes
+    ("scored_at", "TEXT"),
+]
 
 
 def _migrate(conn: sqlite3.Connection) -> None:
@@ -52,7 +69,7 @@ def _migrate(conn: sqlite3.Connection) -> None:
 
 def connect() -> sqlite3.Connection:
     """Open a connection; create schema on first use, then backfill new columns."""
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(db_path())
     conn.row_factory = sqlite3.Row
     conn.executescript(_SCHEMA)
     _migrate(conn)

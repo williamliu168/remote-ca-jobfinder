@@ -1,0 +1,114 @@
+# =============================================================================
+# Company list for profiles/fintech-ai-eng.yaml — public Greenhouse / Lever /
+# Ashby boards (no auth, no API keys). Chosen because they are Canadian and/or
+# hire remote engineers for fintech, financial data, AI/agent tooling, or data
+# infrastructure. Same schema as companies.yaml (platform may also be `ashby`).
+#
+# Slugs were confirmed live with a board probe on 2026-11-03; re-run
+#   python -m jobfinder.cli --profile profiles/fintech-ai-eng.yaml verify
+# periodically and set enabled:false on any that go dead. Trading firms are
+# mostly onsite outside Canada; they're kept so the location lens decides.
+# =============================================================================
+companies:
+  # --- Canadian / Canadian-founded -------------------------------------------
+  - { slug: wealthsimple, platform: ashby, display_name: Wealthsimple, tags: [canada, fintech] }
+  - { slug: koho, platform: ashby, display_name: KOHO, tags: [canada, fintech] }
+  - { slug: float, platform: ashby, display_name: Float, tags: [canada, fintech] }
+  - { slug: neofinancial, platform: ashby, display_name: Neo Financial, tags: [canada, fintech] }
+  - { slug: lightspeedhq, platform: ashby, display_name: Lightspeed, tags: [canada, commerce] }
+  - { slug: 1password, platform: ashby, display_name: 1Password, tags: [canada, security, remote-first] }
+  - { slug: cohere, platform: ashby, display_name: Cohere, tags: [canada, ai] }
+  - { slug: trulioo, platform: ashby, display_name: Trulioo, tags: [canada, fintech, identity] }
+  - { slug: benevity, platform: ashby, display_name: Benevity, tags: [canada] }
+  - { slug: jobber, platform: ashby, display_name: Jobber, tags: [canada] }
+  - { slug: d2l, platform: greenhouse, display_name: D2L, tags: [canada] }
+  - { slug: thinkific, platform: ashby, display_name: Thinkific, tags: [canada, remote-first] }
+  - { slug: ritual, platform: greenhouse, display_name: Ritual, tags: [canada] }
+  - { slug: faire, platform: greenhouse, display_name: Faire, tags: [canada, marketplace] }
+
+  # --- Fintech, payments, financial data -------------------------------------
+  - { slug: stripe, platform: greenhouse, tags: [fintech, payments] }
+  - { slug: plaid, platform: ashby, display_name: Plaid, tags: [fintech, data] }
+  - { slug: ramp, platform: ashby, display_name: Ramp, tags: [fintech] }
+  - { slug: brex, platform: greenhouse, tags: [fintech, remote-first] }
+  - { slug: mercury, platform: greenhouse, tags: [fintech, remote-first] }
+  - { slug: affirm, platform: greenhouse, tags: [fintech, remote-first] }
+  - { slug: robinhood, platform: greenhouse, tags: [fintech, brokerage] }
+  - { slug: coinbase, platform: greenhouse, tags: [fintech, crypto] }
+  - { slug: chime, platform: greenhouse, tags: [fintech] }
+  - { slug: carta, platform: greenhouse, tags: [fintech] }
+  - { slug: sofi, platform: greenhouse, display_name: SoFi, tags: [fintech] }
+  - { slug: addepar1, platform: greenhouse, display_name: Addepar, tags: [fintech, wealth, data] }
+  - { slug: alphasense, platform: greenhouse, display_name: AlphaSense, tags: [findata, ai] }
+  - { slug: rogo, platform: ashby, display_name: Rogo, tags: [findata, ai] }
+  - { slug: alpaca, platform: greenhouse, tags: [fintech, brokerage, api] }
+  - { slug: public, platform: greenhouse, display_name: Public.com, tags: [fintech, brokerage] }
+  - { slug: moderntreasury, platform: ashby, display_name: Modern Treasury, tags: [fintech, payments] }
+  - { slug: column, platform: ashby, display_name: Column, tags: [fintech, banking] }
+  - { slug: unit, platform: ashby, display_name: Unit, tags: [fintech, banking] }
+  - { slug: lithic, platform: greenhouse, tags: [fintech, payments] }
+  - { slug: orb, platform: ashby, display_name: Orb, tags: [fintech, billing] }
+  - { slug: persona, platform: ashby, display_name: Persona, tags: [fintech, identity] }
+  - { slug: sardine, platform: ashby, display_name: Sardine, tags: [fintech, risk] }
+  - { slug: alloy, platform: ashby, display_name: Alloy, tags: [fintech, risk] }
+  - { slug: fireblocks, platform: greenhouse, tags: [crypto] }
+  - { slug: bitgo, platform: greenhouse, display_name: BitGo, tags: [crypto] }
+  - { slug: paxos, platform: ashby, display_name: Paxos, tags: [crypto] }
+  - { slug: anchorage, platform: lever, display_name: Anchorage Digital, tags: [crypto] }
+
+  # --- Trading firms (mostly onsite; the location lens decides) ---------------
+  - { slug: janestreet, platform: greenhouse, display_name: Jane Street, tags: [trading] }
+  - { slug: jumptrading, platform: greenhouse, display_name: Jump Trading, tags: [trading] }
+  - { slug: imc, platform: greenhouse, display_name: IMC Trading, tags: [trading] }
+
+  # --- AI labs, agents, AI applications ----------------------------------------
+  - { slug: anthropic, platform: greenhouse, tags: [ai] }
+  - { slug: openai, platform: ashby, display_name: OpenAI, tags: [ai] }
+  - { slug: scaleai, platform: greenhouse, display_name: Scale AI, tags: [ai, data] }
+  - { slug: togetherai, platform: greenhouse, display_name: Together AI, tags: [ai, infra] }
+  - { slug: gleanwork, platform: greenhouse, display_name: Glean, tags: [ai] }
+  - { slug: writer, platform: ashby, display_name: Writer, tags: [ai] }
+  - { slug: perplexity, platform: ashby, display_name: Perplexity, tags: [ai] }
+  - { slug: sierra, platform: ashby, display_name: Sierra, tags: [ai, agents] }
+  - { slug: decagon, platform: ashby, display_name: Decagon, tags: [ai, agents] }
+  - { slug: harvey, platform: ashby, display_name: Harvey, tags: [ai, legal] }
+  - { slug: cresta, platform: greenhouse, tags: [ai, agents] }
+  - { slug: cognition, platform: ashby, display_name: Cognition, tags: [ai, agents, devtools] }
+  - { slug: factory, platform: ashby, display_name: Factory, tags: [ai, agents, devtools] }
+  - { slug: cursor, platform: ashby, display_name: Cursor, tags: [ai, devtools] }
+  - { slug: replit, platform: ashby, display_name: Replit, tags: [ai, devtools] }
+  - { slug: vapi, platform: ashby, display_name: Vapi, tags: [ai, agents] }
+
+  # --- AI / agent infrastructure & tooling -------------------------------------
+  - { slug: langchain, platform: ashby, display_name: LangChain, tags: [ai, agents, devtools] }
+  - { slug: llamaindex, platform: ashby, display_name: LlamaIndex, tags: [ai, agents, devtools] }
+  - { slug: braintrust, platform: ashby, display_name: Braintrust, tags: [ai, evals, devtools] }
+  - { slug: pinecone, platform: ashby, display_name: Pinecone, tags: [ai, data] }
+  - { slug: weaviate, platform: ashby, display_name: Weaviate, tags: [ai, data, remote-first] }
+  - { slug: modal, platform: ashby, display_name: Modal, tags: [ai, infra] }
+  - { slug: baseten, platform: ashby, display_name: Baseten, tags: [ai, infra] }
+  - { slug: fireworks, platform: ashby, display_name: Fireworks AI, tags: [ai, infra] }
+  - { slug: anyscale, platform: ashby, display_name: Anyscale, tags: [ai, infra] }
+  - { slug: runpod, platform: ashby, display_name: RunPod, tags: [ai, infra, remote-first] }
+  - { slug: mintlify, platform: ashby, display_name: Mintlify, tags: [devtools] }
+  - { slug: browserbase, platform: ashby, display_name: Browserbase, tags: [ai, agents, infra] }
+  - { slug: e2b, platform: ashby, display_name: E2B, tags: [ai, agents, infra] }
+  - { slug: vercel, platform: greenhouse, tags: [devtools, remote-first] }
+  - { slug: supabase, platform: ashby, display_name: Supabase, tags: [devtools, data, remote-first] }
+  - { slug: posthog, platform: ashby, display_name: PostHog, tags: [devtools, remote-first] }
+  - { slug: linear, platform: ashby, display_name: Linear, tags: [devtools, remote-first] }
+  - { slug: notion, platform: ashby, display_name: Notion, tags: [devtools] }
+  - { slug: zapier, platform: ashby, display_name: Zapier, tags: [automation, remote-first] }
+
+  # --- Data infrastructure -----------------------------------------------------
+  - { slug: databricks, platform: greenhouse, tags: [data] }
+  - { slug: clickhouse, platform: ashby, display_name: ClickHouse, tags: [data, remote-first] }
+  - { slug: fivetran, platform: greenhouse, tags: [data] }
+  - { slug: airbyte, platform: ashby, display_name: Airbyte, tags: [data, remote-first] }
+  - { slug: temporal, platform: ashby, display_name: Temporal, tags: [infra, remote-first] }
+  - { slug: mongodb, platform: greenhouse, display_name: MongoDB, tags: [data] }
+  - { slug: elastic, platform: greenhouse, tags: [data, remote-first] }
+  - { slug: datadog, platform: greenhouse, tags: [infra] }
+  - { slug: cloudflare, platform: greenhouse, tags: [infra] }
+  - { slug: grafanalabs, platform: greenhouse, display_name: Grafana Labs, tags: [infra, remote-first] }
+  - { slug: gitlab, platform: greenhouse, display_name: GitLab, tags: [devtools, remote-first] }

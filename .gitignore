@@ -3,6 +3,11 @@
 *.sqlite-journal
 jobfinder/db.sqlite
 shortlist.md
+shortlist.*.md
+
+# Résumés are personal — never commit them (score reads them from a local path)
+resume.local.*
+*.local.md
 
 # Python
 __pycache__/

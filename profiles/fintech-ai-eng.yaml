@@ -1,0 +1,143 @@
+# =============================================================================
+# profiles/fintech-ai-eng.yaml — SEARCH PROFILE: senior engineering roles in
+# fintech / financial data / AI & agent systems, remote or Canada-based.
+#
+#   python -m jobfinder.cli --profile profiles/fintech-ai-eng.yaml <command>
+#   (or set JOBFINDER_PROFILE=profiles/fintech-ai-eng.yaml)
+#
+# Same schema as profile.yaml, plus three optional keys:
+#   companies : company list to scrape (relative to this file)
+#   sources   : remotive_categories — slugs from remotive.com/api/remote-jobs/categories
+#   fit       : résumé-fit scoring (jobfinder/score.py). The skills list is the
+#               field's VOCABULARY — it deliberately includes skills a given
+#               résumé may lack, so "gaps" are visible. Nothing personal lives
+#               here; the résumé itself is a local file (never committed).
+# =============================================================================
+name: fintech-ai-eng
+label: "Fintech, financial data & AI/agent engineering"
+location: canada
+companies: ../companies-fintech-ai.yaml
+sources:
+  remotive_categories: [software-development, artificial-intelligence, data, finance, engineering, devops]
+match:
+  scope: title
+  word_boundary: true
+  case_sensitive: false
+
+# Shared veto: titles outside the target track. (YAML anchor, reused below.)
+_exclude: &exclude
+  - '\b(intern(ship)?|co-?op|new\s+grad(uate)?|junior|jr\.?|apprentice)\b'
+  - '\b(ios|android|mobile|front[\s-]?end|embedded|firmware|hardware|silicon|asic|fpga|game)\b'
+  - '\b(recruit(er|ing)|sales|account\s+(executive|manager)|marketing|designer|copywriter)\b'
+  - '\b(qa|sdet|test\s+engineer|support\s+engineer|it\s+support|help\s*desk)\b'
+
+families:
+  - tag: ai-agents            # AI / LLM / agent engineering
+    keywords: [LLM, LLMs, GenAI, "generative AI", "applied AI", "AI engineer", "ML engineer",
+               "machine learning engineer", "forward deployed", MCP, "AI platform", "AI infrastructure"]
+    patterns:
+      - '\b(ai|ml|llm|genai|agents?|agentic)\b.*\b(engineer|developer|architect)\b'
+      - '\b(engineer|developer|architect)\b.*\b(ai|llm|agents?|agentic|genai|machine\s+learning)\b'
+    exclude: *exclude
+
+  - tag: quant-fin-eng        # quant / trading / risk / payments / financial-data engineering
+    keywords: [quant, quantitative, "market data", "financial data", "trading systems",
+               "trading platform", "trading infrastructure"]
+    patterns:
+      - '\b(trading|execution|risk|portfolio|pricing|ledger|payments?|treasury|brokerage|investments?|markets?|banking|lending|credit)\b.*\b(engineer|developer|architect)\b'
+      - '\b(engineer|developer|architect)\b.*\b(trading|risk|portfolio|payments?|ledger|brokerage|markets?|banking|lending|credit)\b'
+    exclude: *exclude
+
+  - tag: data-platform        # data / analytics / pipeline engineering
+    patterns:
+      - '\b(data|analytics|etl|pipelines?|streaming)\s+(platform\s+|infrastructure\s+)?(engineer|developer|architect)\b'
+      - '\b(engineer|developer|architect)\b.*\bdata\s+(platform|infrastructure|pipelines?|engineering)\b'
+    exclude: *exclude
+
+  - tag: backend-systems      # backend / platform / systems / architecture / devrel
+    patterns:
+      - '\b(backend|back[\s-]end|platform|systems|infrastructure|distributed\s+systems|full[\s-]?stack|api|integrations?|product)\s+(software\s+)?(engineer|developer)\b'
+      - '\bsoftware\s+(engineer|developer|architect)\b'
+      - '\b(solutions?|software|systems|technical|enterprise|cloud)\s+architect\b'
+      - '\bdeveloper\s+(advocate|relations|experience)\b'
+      - '\bdevrel\b'
+      - '\b(staff|principal|senior|lead|founding)\s+engineer\b'
+    exclude: *exclude
+
+fit:
+  resume: ../resume.local.md      # git-ignored; override with --resume or JOBFINDER_RESUME
+  saturation: 15                  # match weight at which coverage stops being discounted
+  title_weight: 2                 # a term in the title counts double
+  skills:
+    # --- languages ---
+    - {term: python, weight: 3}
+    - {term: "c++", weight: 2, patterns: ['(?<![\w+])c\+\+']}
+    - {term: typescript, weight: 2}
+    - {term: javascript, weight: 1, keywords: [javascript, node.js, nodejs]}
+    - {term: sql, weight: 2, keywords: [sql, postgres, postgresql, mysql]}
+    - {term: java, weight: 2}
+    - {term: go, weight: 2, keywords: [golang], patterns: ['\bgo(?=\s*[,/)])']}
+    - {term: rust, weight: 2}
+    - {term: scala, weight: 1}
+    - {term: kotlin, weight: 1}
+    - {term: ruby, weight: 1, keywords: [ruby, rails]}
+    - {term: clojure, weight: 1}
+    # --- cloud, infra, data ---
+    - {term: gcp, weight: 2, keywords: [gcp, google cloud, bigquery, cloud run, pub/sub, pubsub]}
+    - {term: aws, weight: 2, keywords: [aws, amazon web services]}
+    - {term: azure, weight: 1}
+    - {term: docker, weight: 1}
+    - {term: kubernetes, weight: 2, keywords: [kubernetes, k8s]}
+    - {term: terraform, weight: 1}
+    - {term: kafka, weight: 1}
+    - {term: spark, weight: 1, keywords: [spark, pyspark]}
+    - {term: airflow, weight: 1}
+    - {term: dbt, weight: 1}
+    - {term: snowflake, weight: 1}
+    - {term: distributed systems, weight: 2, keywords: [distributed systems]}
+    - {term: real-time, weight: 2, keywords: [real-time, realtime, low-latency, low latency]}
+    - {term: data pipelines, weight: 2, keywords: [etl, data pipeline, data pipelines, data integration]}
+    - {term: api design, weight: 1, keywords: [rest api, rest apis, grpc, api design, public api]}
+    - {term: observability, weight: 1, keywords: [observability, sentry, datadog, prometheus, opentelemetry]}
+    - {term: serverless/edge, weight: 1, keywords: [cloudflare, serverless, cloudflare workers]}
+    # --- application stack ---
+    - {term: react, weight: 1}
+    - {term: next.js, weight: 1, keywords: [next.js, nextjs]}
+    - {term: fastapi, weight: 1}
+    - {term: django, weight: 1}
+    # --- finance domain ---
+    - {term: trading, weight: 3, keywords: [trading, order execution, execution systems]}
+    - {term: quant, weight: 3, keywords: [quant, quantitative]}
+    - {term: backtesting, weight: 2, keywords: [backtest, backtesting, backtester]}
+    - {term: portfolio, weight: 2, keywords: [portfolio management, portfolio construction, portfolio optimization, wealth management, asset management]}
+    - {term: risk, weight: 2, keywords: [risk management, market risk, credit risk, risk models, risk analytics, risk systems]}
+    - {term: derivatives, weight: 1, keywords: [derivatives, futures, fixed income, equities]}
+    - {term: fix protocol, weight: 1, patterns: ['\bFIX\s+(protocol|engine|api|messag\w*)']}
+    - {term: market data, weight: 2, keywords: [market data]}
+    - {term: sec filings, weight: 3, keywords: [sec filings, edgar, xbrl, 10-k, 10-q, financial statements, financial reporting]}
+    - {term: fintech, weight: 2, keywords: [fintech, financial services, capital markets, brokerage, banking]}
+    - {term: payments, weight: 1, keywords: [payments, ledger, reconciliation]}
+    - {term: cfa, weight: 2, keywords: [cfa]}
+    - {term: factor models, weight: 1, keywords: [factor models, factor investing, factor analysis]}
+    # --- AI / agents ---
+    - {term: llm, weight: 3, keywords: [llm, llms, large language model, large language models, generative ai, genai]}
+    - {term: agents, weight: 3, keywords: [ai agents, agentic, agent framework, tool use, tool calling, function calling]}
+    - {term: mcp, weight: 3, keywords: [mcp, model context protocol]}
+    - {term: rag, weight: 2, keywords: [rag, retrieval-augmented, retrieval augmented, vector database, embeddings]}
+    - {term: evals, weight: 3, keywords: [evals, eval harness, llm evaluation, benchmark, benchmarks, benchmarking]}
+    - {term: machine learning, weight: 2, keywords: [machine learning, ml]}
+    - {term: pytorch, weight: 1, keywords: [pytorch, tensorflow, jax]}
+    - {term: fine-tuning, weight: 1, keywords: [fine-tuning, fine tuning, rlhf, post-training]}
+    # --- ways of working ---
+    - {term: architecture, weight: 1, keywords: [system design, software architecture, systems architect, architected]}
+    - {term: zero-to-one, weight: 2, keywords: [0 to 1, 0-to-1, zero to one, founding engineer, founder, early-stage]}
+    - {term: customer-facing, weight: 1, keywords: [customer-facing, client-facing, forward deployed]}
+  seniority:                      # matched against the TITLE
+    - {label: senior+, pattern: '\b(senior|sr\.?|staff|principal|lead|architect|founding)\b', points: 5}
+    - {label: junior, pattern: '\b(junior|jr\.?|entry[\s-]level|new\s+grad|intern)\b', points: -30}
+    - {label: manager-track, pattern: '\b(manager|director|head\s+of|vp)\b', points: -5}
+  dealbreakers:                   # matched against title + posting text
+    - {label: security clearance, pattern: 'security\s+clearance|\bTS/SCI\b|top\s+secret|active\s+clearance'}
+    - {label: US citizens only, pattern: 'U\.?S\.?\s+citizen(ship)?\s+(is\s+)?required|must\s+be\s+a\s+U\.?S\.?\s+citizen|requires?\s+U\.?S\.?\s+citizenship'}
+    - {label: US residents only, pattern: 'must\s+(be\s+)?(reside|located|based|live)\s+in\s+the\s+(U\.?S\.?A?|United\s+States)\b(?!\s*(or|and|/|,)\s*(in\s+)?Canada)'}
+    - {label: EU/UK residents only, pattern: 'must\s+(be\s+)?(reside|located|based|live)\s+in\s+(the\s+)?(EU|Europe|UK|United\s+Kingdom)\b(?!\s*(or|and|/|,)\s*(in\s+)?Canada)'}
